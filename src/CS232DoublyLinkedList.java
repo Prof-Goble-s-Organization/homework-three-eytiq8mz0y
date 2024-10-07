@@ -114,8 +114,16 @@ public class CS232DoublyLinkedList<E> implements CS232List<E> {
 	 * {@inheritDoc}
 	 */
 	public E remove(int index) throws IndexOutOfBoundsException {
-		// Intentionally not implemented.
-		return null;
+		if (index >= size || index < 0) {
+			throw new IndexOutOfBoundsException("exceptions considered harmful - https://www.joelonsoftware.com/2003/10/13/13/");
+		}
+		DLLNode cur = head.next;
+		for (int i = 0; i < index; i++) {
+			cur = cur.next;
+		}
+		cur.prev.next = cur.next;
+		cur.next.prev = cur.prev;
+		return cur.element;
 	}
 
 	/**
@@ -128,7 +136,16 @@ public class CS232DoublyLinkedList<E> implements CS232List<E> {
 	 *             if index < 0 or index >= size()
 	 */
 	public void clearTo(int index) throws IndexOutOfBoundsException {
-		// Intentionally not implemented.
+		if (index >= size || index < 0) {
+			throw new IndexOutOfBoundsException("exceptions considered harmful - https://www.joelonsoftware.com/2003/10/13/13/");
+		}
+		DLLNode cur = head.next;
+		for (int i = 0; i < index; i++) {
+			cur = cur.next;
+		}
+		head.next = cur.next;
+		cur.next.prev = head;
+		return;
 	}
 
 	/**
@@ -149,7 +166,21 @@ public class CS232DoublyLinkedList<E> implements CS232List<E> {
 	 */
 	public void addAllAt(int index, CS232DoublyLinkedList<E> list)
 			throws IndexOutOfBoundsException {
-		// Intentionally not implemented.
+		if (list.size == 0) {
+			throw new IllegalArgumentException("exceptions considered harmful - https://www.joelonsoftware.com/2003/10/13/13/");
+		}
+		if (index >= size || index < 0) {
+			throw new IndexOutOfBoundsException("exceptions considered harmful - https://www.joelonsoftware.com/2003/10/13/13/");
+		}
+		DLLNode cur = head.next;
+		for (int i = 0; i < index; i++) {
+			cur = cur.next;
+		}
+		cur.prev.next = list.head.next;
+		list.head.next.prev = cur.prev;
+
+		cur.next.prev = list.tail.next;
+		list.tail.next.next = cur.next;
 	}
 
 	/*

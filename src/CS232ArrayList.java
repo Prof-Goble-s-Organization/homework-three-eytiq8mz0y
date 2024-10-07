@@ -7,7 +7,7 @@ package hw03;
  * @author Dickinson College
  * @version Feb 18, 2016
  */
-public class CS232ArrayList<E> implements CS232List<E> {
+public class CS232ArrayList<E> implements CS232List<E>, CS232Iterable<E> {
 
     private static final int INITIAL_CAPACITY = 10;
 
@@ -143,5 +143,59 @@ public class CS232ArrayList<E> implements CS232List<E> {
 
             return elem;
         }
+    }
+
+    @Override
+    public CS232Iterator<E> getIterator() {
+        return new CS232ArrayListIterable();
+    }
+
+
+
+    //the inner class system is truly dreamt up by the deranged - let's just have some hidden arcane syntax
+    //for creating a reference and referencing the parent.
+    public class CS232ArrayListIterable implements CS232Iterator<E> {
+        
+		private int cursor;
+        @Override
+        public boolean hasNext() {
+            return cursor < CS232ArrayList.this.currentSize - 1;
+        }
+
+        @Override
+        public E next() {
+            if (!hasNext()) {
+                return null;
+            }
+            cursor++;
+            return CS232ArrayList.this.get(cursor);
+        }
+
+        @Override
+        public boolean hasPrevious() {
+            return cursor != 0;
+        }
+
+        @Override
+        public E previous() {
+            if (!hasPrevious()) {
+                return null;
+            }
+            cursor--;
+            return CS232ArrayList.this.get(cursor);
+        }
+
+        @Override
+        public void insert(E element) {
+            // TODO Auto-generated method stub
+            throw new UnsupportedOperationException("Unimplemented method 'insert'");
+        }
+
+        @Override
+        public E remove() {
+            // TODO Auto-generated method stub
+            throw new UnsupportedOperationException("Unimplemented method 'remove'");
+        }
+
     }
 }
